@@ -1,0 +1,102 @@
+﻿ 
+@model PaymentMethodViewModel
+
+@{
+    var paymentList = ViewBag.PaymentList as List<PaymentListViewModel>;
+   
+}
+
+
+<h1>Ödeme İşlemleri</h1>
+
+<div class="payment-method" style="display:flex;flex-direction:column; align-items:flex-start;margin-bottom:20px">
+    <label>
+        <input style="margin-right: 10px" type="radio" name="payment" value="peşin"> Peşin Ödeme
+    </label>
+</div>
+
+<div class="payment-method" style="display:flex;flex-direction:column; align-items:flex-start;margin-bottom:20px">
+    <label>
+        <input style="margin-right: 10px" type="radio" name="payment" value="kart"> Kart Ödeme
+    </label>
+</div>
+
+<form  asp-controller="PaymentMethod" asp-action="Add" >  
+    <input type="hidden" asp-for="AddressId" value="@ViewBag.AddressId" />
+    <input type="hidden" asp-for="PaymentMethodName" value="Kart" />
+    <input type="hidden" asp-for="UserId" value="@User.GetUserId()"/>
+<div style="display:none;margin-top:20px" class="credit-card-form" id="creditCardForm">
+    <table>
+        <tr>
+                <th>Kartlarım</th>
+            <th></th>
+        </tr>
+
+            @foreach(var item in paymentList)
+            {
+                <tr>
+                    <td>@item.CardNumber </td>
+                    <td><a asp-controller="Order" asp-action="Add" asp-route-addressId="@ViewBag.AddressId" asp-route-paymentMethodId="@item.Id" class="btn btn-success">Ödeme Yap</a> </td>
+                </tr>
+            }
+
+
+    </table>
+
+
+    <h2>Kart Bilgileri</h2>
+    <label style="display:none;margin-bottom:10px" asp-for="CardNumber">Kart Numarası:</label>
+    <input asp-for="CardNumber" style="width:100%;padding:5px; margin-bottom:10px" type="text" id="cardNumber" name="cardNumber" required>
+
+        <label asp-for="ExpirationMonth">Son Kullanma Tarihi(Ay):</label>
+        <input   asp-for="ExpirationMonth" style="width:100%;padding:5px;margin-bottom:10px" />
+        <label asp-for="ExpirationYear">Son Kullanma Tarihi(Yıl):</label>
+        <input   asp-for="ExpirationYear" style="width:100%;padding:5px;margin-bottom:10px" />
+
+
+
+    <label  asp-for="CVV">CVV:</label>
+    <input asp-for="CVV" type="text" id="cvv" name="cvv" required>
+
+    <button  style="background-color:#007bff;color:#fff;padding:10px 20px;border:none;cursor:pointer" type="submit">Ödeme Yap</button>
+</div>
+</form>
+
+<form asp-controller="PaymentMethod" asp-action="Add">
+    <input type="hidden" asp-for="AddressId" value="@ViewBag.AddressId" />
+    <input type="hidden" asp-for="PaymentMethodName" value="Pesin" />
+    <input type="hidden" asp-for="UserId" value="@User.GetUserId()" />
+    
+    <div style="display:none;margin-top:20px" class="cash-form" id="cashForm">
+        
+      
+     
+    <button style="background-color:#007bff;color:#fff;padding:10px 20px;border:none;cursor:pointer" type="submit">Devam Et</button>
+    </div>
+</form>
+
+
+<script>
+    const paymentRadio = document.querySelectorAll('input[name="payment"]');
+    const creditCardForm = document.getElementById('creditCardForm');
+    const cashForm = document.getElementById('cashForm');
+
+    paymentRadio.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.value === 'kart') {
+                creditCardForm.style.display = 'block';
+                cashForm.style.display = 'none';
+            } 
+            else if(radio.value==='peşin')
+            {
+                cashForm.style.display = 'block';
+                creditCardForm.style.display = 'none';
+            }
+            
+            else {
+                creditCardForm.style.display = 'none';
+                cashForm.style.display = 'none';
+            }
+        });
+    });
+</script>

@@ -1,0 +1,144 @@
+﻿@model List<OrderViewModel>
+@{
+    var total = 0;
+}
+<h1>Orders</h1>
+
+@foreach (var item in Model)
+{
+    <a class="btn custom-btn" asp-controller="OrderDetail" asp-action="List" asp-route-id="@item.Id">
+
+        @if (item.OrderStatus == FirstShop.Data.Enums.OrderStatusEnum.Hazırlanıyor)
+        {
+
+            <div class="card" style="height:200px;width:900px;margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;"></div>
+                <div style=" font-size: 16px;  font-weight: bold;   text-align:left; margin-left:20px;">
+                    @item.CreatedDate
+                </div>
+                <div style="font-size: 16px;  font-weight: bold;   text-align:left; margin-left:20px;"> <i class="fas fa-hourglass"></i> @item.OrderStatus</div>
+                <hr>
+
+                <div class="card-body">
+
+                    <div style="display: flex; align-items: center;">
+                       
+
+                        <div style=" text-align: left; margin-right: auto;">
+                          
+
+                            @foreach (var Image in item.ImagePaths)
+                            {
+                                <img class="mb-2" width="100" height="100" style="text-align:right" src="~/images/products/@Image.ImagePath" />
+
+
+
+
+
+                            }
+                           
+                        </div>
+                        <div ></div>
+                        <div style="font-size: 13px; text-align:center; margin-top: 10px;">
+                            @item.Adres
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        }
+        else
+        {
+
+            <div class="card" style="height:200px;width:900px;margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;"></div>
+                <div style="font-size: 16px;  font-weight: bold;   text-align:left; margin-left:20px;">@item.CreatedDate </div>
+                <div style=" font-size: 16px;  font-weight: bold;   text-align:left; margin-left:20px;"> <i class="fas fa-check-circle" style="color: green; font-size: 24px;"></i>@item.OrderStatus</div>
+                <hr>
+
+                <div class="card-body">
+                    <div style="display: flex; align-items: center;">
+
+
+                        <div style=" text-align: left; margin-right: auto;">
+                            @foreach (var Image in item.ImagePaths)
+                            {
+                                <img width="100" height="100" style="text-align:right" src="~/images/products/@Image.ImagePath" />
+
+
+
+
+
+                            }
+                        </div>
+                        <div style="font-size: 13px; text-align:center; margin-top: 10px;">
+                            @item.Adres
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+
+    </a>
+
+}
+
+
+@*  @model List<OrderViewModel>
+
+<div class="container">
+    <h1>Sipariş Listesi</h1>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div style="background-color: @GetCardBackgroundColor(item.OrderStatus)" class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="card-title">
+                                    @if (item.OrderStatus == BilgeShop.Data.Enums.OrderStatusEnum.Hazırlanıyor)
+                                    {
+                                        <span class="badge badge-warning">Hazırlanıyor</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-info">Sipariş Tamamlandı</span>
+                                    }
+                                </h5>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <p class="card-text">Sipariş Tarihi: @item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</p>
+                                <a href="@Url.Action("List", "OrderDetail", new { id = item.Id })" class="btn btn-primary">Detaylar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    string GetCardBackgroundColor(BilgeShop.Data.Enums.OrderStatusEnum orderStatus)
+    {
+        return orderStatus == BilgeShop.Data.Enums.OrderStatusEnum.Hazırlanıyor ? "orange" : "aqua";
+    } *@
+
+
+
+
+
+
+
+
+
+
+

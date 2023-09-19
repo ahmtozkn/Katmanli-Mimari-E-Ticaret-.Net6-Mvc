@@ -1,0 +1,220 @@
+﻿@model CommentViewModel
+
+@{
+    
+  
+    var product = ViewBag.Product as ProductViewModel;
+    var like = ViewBag.Like as LikeViewModel;
+    var productDetail = ViewBag.ProductDetail as ProductDetailList;
+}
+
+<div class="row mt-5 ">
+
+
+    <div class="col-10 offset-1">
+
+
+        <div class="card mb-3" style="max-width: 840px; border: none;">
+            <div class="row g-0">
+                <div class="col-md-6">
+
+                    <img style="height:auto" class="img-fluid rounded-start" src="~/images/products/@productDetail.productList.ImagePath" />
+
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+
+                        <h1>@productDetail.productList.Name</h1>
+                        <h3 style="color:black">@productDetail.productList.UnitPrice TL</h3>
+
+                        <hr />
+                        <div class="card-text">
+                            <a asp-controller="CartItem" asp-action="Add" asp-route-productId="@productDetail.productList.Id" class="btn btn-warning">Sepete Ekle</a>
+                            @*  <a class="btn btn-light" asp-controller="Like" asp-action="Add" asp-route-productId="@product.Id" style="margin-left: 700px;  background-color: transparent; border: none; padding: 0; cursor: pointer;
+                            font-size: 16px;">Beğen</a> *@
+
+
+                        </div>
+
+                        @if (productDetail.productList.UnitInStock == 0)
+                        {
+                            <div style=" color: red;">Tükendi</div>
+                        }
+                        else
+                        {
+                            <div class="card-text">@productDetail.productList.UnitInStock Adet Kaldı</div>
+                        }
+
+                        <div class="card-text"> Satıcı: @productDetail.productList.UserName</div>
+                        <div class="card-text">
+                            <a style="color:black" asp-controller="Home" asp-action="Index" asp-route-categoryId="@productDetail.productList.CategoryId">@productDetail.productList.CategoryName</a>
+                        </div>
+                        @if (like is not null)
+                        {
+                            @if (like.IsLiked == false)
+                            {
+                                <div class="card-text">
+                                    <a asp-controller="Like" asp-action="Add" asp-route-productId="@productDetail.productList.Id" id="btnlike" class="btn btn-warning"> <i style="color:antiquewhite;height:25px" class="fas fa-heart"></i></a>
+                                </div>
+
+                            }
+                            else if (like.IsLiked == true)
+                            {
+                                <div class="card-text">
+                                    <a asp-controller="Like" asp-action="Remove" asp-route-productId="@productDetail.productList.Id" id="btnlike" class="btn btn-warning btnLike"> <i style="color:red;height:25px" class="fas fa-heart"></i></a>
+                                </div>
+                            }
+
+                        }
+                        else if (like is null)
+                        {
+                            <div class="card-text">
+                                <a asp-controller="Like" asp-action="Add" asp-route-productId="@productDetail.productList.Id" id="btnlike" class="btn btn-warning btnLike"> <i style="color:antiquewhite;height:25px" class="fas fa-heart"></i></a>
+                            </div>
+                        }
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2 " style="height:400px;">
+
+    <div class="col-10 offset-1">
+        <h4>Benzer Ürünler</h4>
+        @await Component.InvokeAsync("Products",new  { categoryID=product.CategoryId ,productId=product.Id })
+
+    </div>
+
+</div>
+
+<div class="row mt-2 ">
+
+    <div class="col-10 offset-1">
+
+        <div class="card mb-3 " style="max-width: 840px; border: none;">
+            <div class="row g-0">
+                <div class="col-md-12">
+
+
+                    <button style="padding: 10px 20px;  background-color: #007bff; color: #fff;  border: none; cursor: pointer; font-size: 16px;  border-radius: 5px;" onclick="toggleCommentSection()">  Yorumları Görüntüle/Kapat </button>
+                    <div id="comment-section">
+
+
+                        @if (productDetail.commentList.Count == 0)
+                        {
+                            <div style="padding: 10px;text-align: center; font-size: 16px; color:red;">
+                                Henüz Yorum Yapılmadı
+                            </div>
+
+
+                        }
+
+
+                        @foreach (var item in productDetail.commentList)
+                        {
+
+
+
+
+                            <div style=" background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+           width: 1300px;" class="comment-card mb-5">
+
+
+                                <div class="rating">★★★★★</div>
+                                <p>@item.Comment</p>
+                                <div class="author">@item.UserName</div>
+                                <div class="date">@item.CreatedDate</div>
+                            </div>
+
+
+                        }
+
+                        <form class="mb-5" method="post" asp-controller="Comment" asp-action="Add">
+
+                            <input asp-for="ProductId" type="hidden" value="@product.Id" />
+                            <input class="form-control" asp-for="Comment" />
+                            <button class="btn btn-primary" type="submit">YORUMU GÖNDER</button>
+
+                        </form>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+@section Scripts{
+
+    <script>
+
+
+
+
+
+
+        var commentSectionOpen = false;
+
+        // $('.btnLike').click(function (e) {
+
+        //     e.preventDefault();
+        // }
+
+        window.onload = function () {
+            var commentSection = document.getElementById("comment-section");
+            commentSection.style.display = "none";
+            // Sayfa yüklendiğinde yorum bölümünü kapalı olarak başlat
+
+            // commentSection.preventDefault();
+            //her basıldığında yukarı atmasın
+            // var likeSection = document.getElementById("btnlike");
+            // likeSection.preventDefault();
+
+        };
+
+
+        var table = new DataTable('#productdd', {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json',
+            },
+            pageLength: 3
+        });
+
+        function toggleCommentSection() {
+            var commentSection = document.getElementById("comment-section");
+            if (commentSectionOpen) {
+                commentSection.style.display = "none";
+
+            } else {
+                commentSection.style.display = "block";
+
+            }
+            commentSectionOpen = !commentSectionOpen;
+        }
+    </script>
+
+
+}

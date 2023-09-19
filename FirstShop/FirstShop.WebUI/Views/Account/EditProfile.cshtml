@@ -1,0 +1,12 @@
+﻿@model EditProfileViewModel
+<h3>Edit Profile</h3>
+<form asp-controller="Account" asp-action="EditProfile">
+    <input asp-for="Id" type="hidden" />
+    <label asp-for="Email"></label>
+    <input asp-for="Email" class="form-control" />
+    <label asp-for="FirstName"></label>
+    <input asp-for=FirstName class="form-control" />
+    <label asp-for="LastName"></label>
+    <input  asp-for="LastName" class="form-control" />
+    <button class="btn btn-secondary" type="submit">Update</button>
+</form>

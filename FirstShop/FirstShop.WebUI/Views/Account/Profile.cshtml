@@ -1,0 +1,12 @@
+﻿@model ProfileViewModel
+
+<div class="container">
+    
+    <h1>Kullanıcı Bilgileri </h1>
+    <p>Ad: @Model.FirstName</p>
+    <p>Soyad: @Model.LastName </p>
+    <p>E-Mail: @Model.Email</p>
+    <a asp-controller="Account" asp-action="EditProfile" style="margin-left:10px" class="btn btn-dark">Update Profile</a>
+    <a asp-controller="Account" asp-action="ChangePassword" style="margin-left:10px" class="btn btn-dark">Change Password</a>
+    
+</div> 

@@ -1,0 +1,35 @@
+﻿@model List<ProductViewModel>
+
+@if (Model.Count == 0)
+{
+
+    <h1 style="text-align:center;color:red;margin-top:50px";>Favorilerinize Henüz Ürün Eklenmedi.</h1>
+    <h1 style="text-align:center;"> <a style="text-align:center;font-size:20px;margin-right:20px" href="/" class="btn btn-success">Hemen Alışverişe Başla</a>        </h1>
+}
+else if (Model.Count > 0)
+{
+    <h1>Favorites</h1>
+    <table class="table table-stripped">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Price</th>
+            <th></th>
+
+
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><img width="200" height="200" src="~/images/products/@item.ImagePath" /></td>
+                <td>@item.Name</td>
+                <td>@item.UnitPrice</td>
+                <td> <a class="btn btn-danger" asp-controller="Like" asp-action="ListRemove" asp-route-productId="@item.Id">-</a>
+                    <a asp-controller="CartItem" asp-action="Add" asp-route-productId="@item.Id" class="btn btn-warning">Sepete Ekle</a>
+                </td>
+
+            </tr>
+        }
+
+    </table>
+}

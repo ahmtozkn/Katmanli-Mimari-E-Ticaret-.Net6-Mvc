@@ -1,0 +1,20 @@
+﻿@model List<PaymentListViewModel>
+<table class="table table-stipped">
+    <tr>
+        <th>Name</th>
+        <th>CardNumber</th>
+        <th>ExpertionDate</th>
+        
+
+    </tr>
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.CardNumber</td>
+            <td>@item.ExpirationMonth/@item.ExpirationYear</td>
+
+        </tr>
+    }
+
+</table>

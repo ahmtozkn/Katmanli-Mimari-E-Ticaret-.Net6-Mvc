@@ -1,0 +1,22 @@
+﻿@model List<CategoryViewModel>
+
+
+<div class="container mt-1">
+    <div class="row justify-content-center col-lg-10 col-md-12" style="text-align:center;">
+        <div class="col-2">
+            <a style="border: none; background-color: white; display: block; padding-left:2px; padding-right: 5px; border-right: 1px solid #ccc; text-align:center" asp-controller="Home" asp-action="Index" asp-route-categoryName="" class="list-group-item text fw-bold">
+                TÜM ÜRÜNLER
+            </a>
+        </div>
+        @foreach (var item in Model)
+        {
+            <div class="col-2" style="text-align:center">
+                <a style="border: none; background-color: white; display: block; padding-left:2px; padding-right: 5px; border-right: 1px solid #ccc; text-align:center" asp-controller="Home" asp-action="Index" asp-route-categoryId="@item.Id" asp-route-categoryName="@item.Name" class="list-group-item ">
+                    @item.Name
+                </a>
+            </div>
+        }
+    </div>
+</div>
+        
+

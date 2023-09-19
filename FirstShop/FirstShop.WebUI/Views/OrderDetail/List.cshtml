@@ -1,0 +1,28 @@
+﻿@model List<OrderDetailViewModel>
+
+
+<h1>SİPARİŞLERİNİZ</h1>
+<table class="table table-stripped">
+    <tr>
+        <th></th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>OrderId </th>
+
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><img width="200" height="200" src="~/images/products/@item.ImagePath" /></td>
+
+            <td> @item.Quantity</td>
+
+            <td>@item.Price</td>
+            <td>@item.OrderId</td>
+
+
+        </tr>
+
+    }
+</table>

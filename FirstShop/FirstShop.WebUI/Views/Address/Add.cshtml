@@ -1,0 +1,42 @@
+﻿@model AddressViewModel
+
+@{
+    var addressList = ViewBag.Address as List<AddressViewModel>;
+}
+@if (addressList is not null)
+{
+    <table class="table table-stripped">
+        <tr>
+            <th>Adress Başlığı</th>
+            <th></th>
+        </tr>
+        @foreach (var item in addressList)
+        {
+            <tr>
+                <td> @item.Adres</td>
+                <td><a asp-controller="PaymentMethod" asp-action="Add" asp-route-AddressId="@item.Id" class="btn btn-success">Devam Et</a></td>
+            </tr>
+        }
+
+    </table>
+}
+<form method="post" asp-controller="Address" asp-action="Add">
+
+    <div class="mb-2">
+        <label asp-for="Sehir"> </label>
+        <input class="form-control" asp-for="Sehir" />
+    </div>
+    <div class="mb-2">
+        <label asp-for="Adres"> </label>
+        <input class="form-control" asp-for="Adres" />
+    </div>
+
+    <div class="mb-2">
+        <label asp-for="PostaKodu"> </label>
+        <input class="form-control" asp-for="PostaKodu" />
+    </div>
+
+    <button class="btn btn-success" type="submit">TAMAMLA</button>
+
+</form>
+
